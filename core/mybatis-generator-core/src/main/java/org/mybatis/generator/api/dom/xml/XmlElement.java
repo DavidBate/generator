@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.mybatis.generator.api.dom.OutputUtilities;
+import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
 /**
  * The Class XmlElement.
@@ -145,7 +146,8 @@ public class XmlElement extends Element {
             sb.append(">"); //$NON-NLS-1$
             for (Element element : elements) {
                 OutputUtilities.newLine(sb);
-                sb.append(element.getFormattedContent(indentLevel + 1));
+                String content = element.getFormattedContent(indentLevel + 1);
+                sb.append(content);
             }
             OutputUtilities.newLine(sb);
             OutputUtilities.xmlIndent(sb, indentLevel);

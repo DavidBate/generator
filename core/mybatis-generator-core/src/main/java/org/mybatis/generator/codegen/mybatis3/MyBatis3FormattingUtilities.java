@@ -19,6 +19,7 @@ import static org.mybatis.generator.internal.util.StringUtility.escapeStringForJ
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.codegen.XmlConstants;
 
 /**
  * The Class MyBatis3FormattingUtilities.
@@ -58,20 +59,28 @@ public class MyBatis3FormattingUtilities {
     public static String getParameterClause(
             IntrospectedColumn introspectedColumn, String prefix) {
         StringBuilder sb = new StringBuilder();
+        if(isParamNameExcluded(introspectedColumn.getJavaProperty(prefix))){
+        	sb.append("now()");
+        }else{
+        	sb.append("#{"); //$NON-NLS-1$
+            sb.append(introspectedColumn.getJavaProperty(prefix));
+            sb.append(",jdbcType="); //$NON-NLS-1$
+            sb.append(introspectedColumn.getJdbcTypeName());
 
-        sb.append("#{"); //$NON-NLS-1$
-        sb.append(introspectedColumn.getJavaProperty(prefix));
-        sb.append(",jdbcType="); //$NON-NLS-1$
-        sb.append(introspectedColumn.getJdbcTypeName());
+            if (stringHasValue(introspectedColumn.getTypeHandler())) {
+                sb.append(",typeHandler="); //$NON-NLS-1$
+                sb.append(introspectedColumn.getTypeHandler());
+            }
 
-        if (stringHasValue(introspectedColumn.getTypeHandler())) {
-            sb.append(",typeHandler="); //$NON-NLS-1$
-            sb.append(introspectedColumn.getTypeHandler());
+            sb.append('}');
         }
-
-        sb.append('}');
-
         return sb.toString();
+    }
+    
+    public static Boolean isParamNameExcluded(String paramName){
+    	return paramName!=null 
+    			&& (paramName.equals(XmlConstants.TABLE_ELEMENTS_USE_NOW_INSTEAD_GMT_CREATED) 
+    					|| paramName.equals(XmlConstants.TABLE_ELEMENTS_USE_NOW_INSTEAD_GMT_MODIFIED));
     }
 
     /**
@@ -113,15 +122,12 @@ public class MyBatis3FormattingUtilities {
      *            the introspected column
      * @return the escaped column name
      */
-    public static String getEscapedColumnName(
-            IntrospectedColumn introspectedColumn) {
+    public static String getEscapedColumnName(IntrospectedColumn introspectedColumn) {
         StringBuilder sb = new StringBuilder();
-        sb.append(escapeStringForMyBatis3(introspectedColumn
-                .getActualColumnName()));
+        sb.append(escapeStringForMyBatis3(introspectedColumn.getActualColumnName()));
 
         if (introspectedColumn.isColumnNameDelimited()) {
-            sb.insert(0, introspectedColumn.getContext()
-                    .getBeginningDelimiter());
+            sb.insert(0, introspectedColumn.getContext().getBeginningDelimiter());
             sb.append(introspectedColumn.getContext().getEndingDelimiter());
         }
 
