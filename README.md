@@ -1,4 +1,4 @@
-MyBatis Generator (MBG)
+MyBatis Generator X (MBGX)
 =======================
 
 [![Build Status](https://travis-ci.org/mybatis/generator.svg?branch=master)](https://travis-ci.org/mybatis/generator)
