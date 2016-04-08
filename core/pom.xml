@@ -40,6 +40,40 @@
     <hsqldb.version>2.3.3</hsqldb.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>http://115.29.208.92:8081/nexus/content/groups/public/</url>
+      <releases>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>snapshots</id>
+      <url>http://115.29.208.92:8081/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>  
+    <pluginRepository>  
+      <id>maven-net-cn</id>  
+      <name>Maven shinemo Mirror</name>  
+      <url>http://115.29.208.92:8081/nexus/content/groups/public/</url>  
+      <releases>  
+        <enabled>true</enabled>  
+      </releases>  
+      <snapshots>  
+        <enabled>false</enabled>  
+      </snapshots>      
+    </pluginRepository>  
+  </pluginRepositories>  
+
   <reporting>
     <plugins>
       <plugin>
@@ -159,6 +193,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.21</version>
+      </dependency>
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
