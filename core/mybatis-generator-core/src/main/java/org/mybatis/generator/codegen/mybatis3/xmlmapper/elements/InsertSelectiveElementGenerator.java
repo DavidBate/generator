@@ -112,8 +112,8 @@ public class InsertSelectiveElementGenerator extends
             // author by david for the insert
             //	and update(now())
             if(MyBatis3FormattingUtilities.isParamNameExcluded(introspectedColumn.getJavaProperty())){
-            	insertTrimElement.addElement(new TextElement(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn)));
-            	valuesTrimElement.addElement(new TextElement(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn)));
+            	insertTrimElement.addElement(new TextElement(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn)+","));
+            	valuesTrimElement.addElement(new TextElement(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn)+","));
             }else{
             	XmlElement insertNotNullElement = new XmlElement("if"); //$NON-NLS-1$
                 sb.setLength(0);

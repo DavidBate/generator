@@ -82,6 +82,11 @@ public class MyBatis3FormattingUtilities {
     			&& (paramName.equals(XmlConstants.TABLE_ELEMENTS_USE_NOW_INSTEAD_GMT_CREATED) 
     					|| paramName.equals(XmlConstants.TABLE_ELEMENTS_USE_NOW_INSTEAD_GMT_MODIFIED));
     }
+    
+    public static Boolean isParamNameUpdateExcluded(String paramName){
+    	return paramName!=null 
+    			&& (paramName.equals(XmlConstants.TABLE_ELEMENTS_USE_NOW_INSTEAD_GMT_MODIFIED));
+    }
 
     /**
      * The phrase to use in a select list. If there is a table alias, the value will be

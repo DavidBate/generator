@@ -63,24 +63,32 @@ public class UpdateByPrimaryKeySelectiveElementGenerator extends
         XmlElement dynamicElement = new XmlElement("set"); //$NON-NLS-1$
         answer.addElement(dynamicElement);
 
-        for (IntrospectedColumn introspectedColumn : introspectedTable
-                .getNonPrimaryKeyColumns()) {
-            XmlElement isNotNullElement = new XmlElement("if"); //$NON-NLS-1$
-            sb.setLength(0);
-            sb.append(introspectedColumn.getJavaProperty());
-            sb.append(" != null"); //$NON-NLS-1$
-            isNotNullElement.addAttribute(new Attribute("test", sb.toString())); //$NON-NLS-1$
-            dynamicElement.addElement(isNotNullElement);
+        for (IntrospectedColumn introspectedColumn : introspectedTable.getNonPrimaryKeyColumns()) {
+        	
+        	if(MyBatis3FormattingUtilities.isParamNameUpdateExcluded(introspectedColumn.getJavaProperty())){
+        		 sb.setLength(0);
+        		 sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
+                 sb.append(" = "); //$NON-NLS-1$
+                 sb.append("now()");
+                 sb.append(',');
+        		dynamicElement.addElement(new TextElement(sb.toString()));
+            }else{
+            	XmlElement isNotNullElement = new XmlElement("if"); //$NON-NLS-1$
+                sb.setLength(0);
+                sb.append(introspectedColumn.getJavaProperty());
+                sb.append(" != null"); //$NON-NLS-1$
+                isNotNullElement.addAttribute(new Attribute("test", sb.toString())); //$NON-NLS-1$
+                dynamicElement.addElement(isNotNullElement);
 
-            sb.setLength(0);
-            sb.append(MyBatis3FormattingUtilities
-                    .getEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
-            sb.append(',');
+                sb.setLength(0);
+                sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
+                sb.append(" = "); //$NON-NLS-1$
+                sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+                sb.append(',');
 
-            isNotNullElement.addElement(new TextElement(sb.toString()));
+                isNotNullElement.addElement(new TextElement(sb.toString()));
+            }
+        	
         }
 
         boolean and = false;
